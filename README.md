@@ -1,4 +1,4 @@
 # YelpCamp
 
-This is a website that allows users to add and review various campgrounds within the US
-This app was built with Javascript, Node.js, Express, MongoDB, and EJS.
+This is a website that allows users to add and review campgrounds within the US.
+This web app was built using Node.js, HTML, ejs, Bootstrap 5, mongoDB, and Express.
