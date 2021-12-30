@@ -13,6 +13,11 @@ router.route('/')
         catchAsync(campgrounds.createCampground)
     );
 
+    router.get('/new',
+        isLoggedIn,
+        campgrounds.renderNewForm
+    );
+
 router.route('/:id')
 	.get(catchAsync(campgrounds.showCampground))
     .put(
@@ -27,10 +32,6 @@ router.route('/:id')
         catchAsync(campgrounds.deleteCampground)
     );
 
-router.get('/new',
-    isLoggedIn,
-    campgrounds.renderNewForm
-);
 
 router.get('/:id/edit',
     isLoggedIn,
