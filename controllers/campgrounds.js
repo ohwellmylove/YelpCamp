@@ -6,7 +6,7 @@ const { cloudinary } = require('../cloudinary');
 const { request } = require('express');
 
 module.exports.index = async (req, res) => {
-	const campgrounds = await Campground.find({});
+	const campgrounds = await Campground.find({}).sort({ _id: -1 });
 	res.render('campgrounds/index', { campgrounds });
 };
 
@@ -34,7 +34,8 @@ module.exports.showCampground = async (req, res) => {
 			path: 'reviews',
 			populate: {
 				path: 'author',
-			},
+            },
+            options: { sort: { _id: -1 } }
 		})
 		.populate('author');
 	if (!campground) {
