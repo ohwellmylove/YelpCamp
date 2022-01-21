@@ -5,11 +5,13 @@
         <div class="col-sm-6 my-3">
             <div id="campgroundCarousel" class="carousel slide" data-bs-ride="carousel">
                 <div class="carousel-inner">
-                    <% campground.images.forEach((img, i)=> { %>
+                    <% if (campground.images.length) { campground.images.forEach((img, i)=> { %>
                         <div class="carousel-item <%= i === 0 ? 'active' : ''%>">
                             <img src="<%= img.url %>" class="d-block w-100" alt="">
                         </div>
-                        <% }) %>
+                        <% })} else { %>
+                            <img src="https://res.cloudinary.com/douqbebwk/image/upload/v1600103881/YelpCamp/lz8jjv2gyynjil7lswf4.png">
+                            <% } %>
                     </div>
                     <% if (campground.images.length> 1) {%>
                         <button class="carousel-control-prev" type="button" data-bs-target="#campgroundCarousel"

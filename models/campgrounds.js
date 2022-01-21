@@ -2,6 +2,8 @@ const mongoose = require('mongoose');
 const Review = require('./review');
 const Schema = mongoose.Schema;
 const { cloudinary } = require('../cloudinary');
+const mongoosePaginate = require('mongoose-paginate-v2');
+
 
 const ImageSchema = new Schema({
 	url: String,
@@ -62,5 +64,7 @@ CampgroundSchema.post('findOneAndDelete', async function (doc) {
 		}
 	}
 });
+
+CampgroundSchema.plugin(mongoosePaginate);
 
 module.exports = mongoose.model('Campground', CampgroundSchema);

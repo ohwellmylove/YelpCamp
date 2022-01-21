@@ -6,8 +6,17 @@ const { cloudinary } = require('../cloudinary');
 const { request } = require('express');
 
 module.exports.index = async (req, res) => {
-	const campgrounds = await Campground.find({}).sort({ _id: -1 });
-	res.render('campgrounds/index', { campgrounds });
+	if (!req.query.page) {
+		const campgrounds = await Campground.paginate({}, { sort: { _id: -1 } });
+		res.render('campgrounds/index', { campgrounds });
+    } else {
+        const { page } = req.query;
+        const campgrounds = await Campground.paginate({}, {
+            page,
+            sort: { _id: -1 }
+        });
+        res.status(200).json(campgrounds)
+	}
 };
 
 module.exports.renderNewForm = (req, res) => {
@@ -15,12 +24,14 @@ module.exports.renderNewForm = (req, res) => {
 };
 
 module.exports.createCampground = async (req, res, next) => {
-    const geoData = await geocoder.forwardGeocode({
-        query: req.body.campground.location,
-        limit: 1
-    }).send()
-    const campground = new Campground(req.body.campground);
-    campground.geometry = geoData.body.features[0].geometry;
+	const geoData = await geocoder
+		.forwardGeocode({
+			query: req.body.campground.location,
+			limit: 1,
+		})
+		.send();
+	const campground = new Campground(req.body.campground);
+	campground.geometry = geoData.body.features[0].geometry;
 	campground.images = req.files.map((f) => ({ url: f.path, filename: f.filename }));
 	campground.author = req.user._id;
 	await campground.save();
@@ -34,8 +45,8 @@ module.exports.showCampground = async (req, res) => {
 			path: 'reviews',
 			populate: {
 				path: 'author',
-            },
-            options: { sort: { _id: -1 } }
+			},
+			options: { sort: { _id: -1 } },
 		})
 		.populate('author');
 	if (!campground) {
