@@ -3,7 +3,7 @@ const cities = require('./cities');
 const { places, descriptors, imgurl, imgfilename } = require('./seedHelpers');
 const Campground = require('../models/campgrounds');
 
-mongoose.connect('mongodb://localhost:27017/yelp-camp');
+mongoose.connect('mongodb+srv://ohwellmylove:michael98@yelp-cluster.c5l8u.mongodb.net/myFirstDatabase?retryWrites=true&w=majority');
 
 const db = mongoose.connection;
 
@@ -22,7 +22,7 @@ const seedDB = async () => {
 		const random1000 = Math.floor(Math.random() * 1000);
 		const price = Math.floor(Math.random() * 20 + 10);
 		const camp = new Campground({
-			author: '61d8cee518bed6aaa91fe4e1',
+			author: '61f877fca0ba6c57459165f3',
 			location: `${cities[random1000].city}, ${cities[random1000].state}`,
 			title: `${sample(descriptors)} ${sample(places)}`,
 			description:
@@ -30,10 +30,7 @@ const seedDB = async () => {
 			price,
 			geometry: {
 				type: 'Point',
-                coordinates: [
-                    cities[random1000].longitude,
-                    cities[random1000].latitude
-                ],
+				coordinates: [cities[random1000].longitude, cities[random1000].latitude],
 			},
 			images: [
 				{
@@ -43,7 +40,7 @@ const seedDB = async () => {
 				{
 					url: imgurl[randomPic2],
 					filename: imgfilename[randomPic2],
-				}
+				},
 			],
 		});
 		await camp.save();
